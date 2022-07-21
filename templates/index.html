@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action={% url 'index' %} method="post">
+        {% csrf_token %}
+        <section>
+            Клиент
+            <select name="client">
+            <option value="Все">Все</option>
+            {% for cl in context.clients %}
+                <option value="{{ cl.name }}">{{ cl.name }}</option>
+            {% endfor %}
+            </select>
+            Оборудование
+            <select name="equipment">
+            <option value="Все">Все</option>
+            {% for eq in context.equipments %}
+                <option value="{{ eq.name }}">{{ eq.name }}</option>
+            {% endfor %}
+            </select>
+            Состояние
+            <select name="mode">
+            <option value="Все">Все</option>
+            {% for mod in context.modes %}
+                <option value="{{ mod.name }}">{{ mod.name }}</option>
+            {% endfor %}
+            </select>
+
+            Время <input type="number" name="minutes" size="5" min="0"><p>
+            Дата начала <input type="date" name="start_date" size="5">
+            Дата окончания <input type="date" name="end_date" size="5">
+            Время начала <input type="time" name="start_time" size="5">
+            Время окончания <input type="time" name="end_time" size="5"><p>
+            <button type="submit">Поиск</button>
+        </section>
+    </form>
+        {% if context.query %}
+            <p>Количество объектов {{ context.query.count }}</p><br>
+            <table>
+            <thead>
+                 <tr>
+                <th>ID</th>
+                <th>Название клиента</th>
+                <th>Название оборудования</th>
+                <th>Название состояния</th>
+                <th>Длительность нахождения</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for qu in context.query %}
+                <tr>
+                <td>{{qu.id}}</td>
+                <td>{{qu.client.name}}</td>
+                <td>{{qu.equipment.name}}</td>
+                <td>{{qu.mode.name}}</td>
+                <td>{{qu.minutes}}</td>
+                 </tr>
+            {% endfor %}
+            </tbody>
+            {% endif %}
+            </table>
+
+</body>
+</html>
